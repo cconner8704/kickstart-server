@@ -15,7 +15,7 @@ RUN set -ex                           \
     && yum clean -y expire-cache
 
 # volumes
-VOLUME /etc/dnsmasq.conf      \
+VOLUME /etc/dnsmasq.d         \
        /var/ftp/pub	      \
        /var/lib/tftpboot      
 
@@ -24,6 +24,7 @@ EXPOSE 21 53 67 69 4011
 
 #Extra Config
 RUN /bin/cp -fr /usr/share/syslinux/* /var/lib/tftpboot
+RUN echo "conf-dir=/etc/dnsmasq.d/,*.conf" >> /etc/dnsmasq.conf
 
 # add run file
 ADD entrypoint.sh /entrypoint.sh

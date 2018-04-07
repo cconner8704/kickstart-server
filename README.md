@@ -3,7 +3,7 @@
 A Docker image which allows you to run salt-master service.
 
     docker run -d                                \
-        -v /tmp/dnsmasq.conf:/etc/dnsmasq.conf   \
+        -v /tmp/dnsmasq.d:/etc/dnsmasq.d         \
         -v /tmp/pub:/var/ftp/pub                 \
         -v /tmp/tftpboot:/var/lib/tftpboot       \
         --name kickstart-server                  \
