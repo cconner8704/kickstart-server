@@ -17,14 +17,13 @@ RUN set -ex                           \
 # volumes
 VOLUME /etc/dnsmasq.d         \
        /var/ftp/pub	      \
-       /var/lib/tftpboot      
+       /var/lib/tftpboot/pxelinux.cfg \      
 
 # ports #tcp for all except 69 and 4011 are UDP
 EXPOSE 21 53 67 69 4011
 
 #Extra Config
 RUN /bin/cp -fr /usr/share/syslinux/* /var/lib/tftpboot
-RUN echo "conf-dir=/etc/dnsmasq.d/,*.conf" >> /etc/dnsmasq.conf
 
 # add run file
 ADD entrypoint.sh /entrypoint.sh
