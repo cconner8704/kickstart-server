@@ -1,12 +1,9 @@
 #!/bin/sh
-
 while [ 1 ]
 do
-	sleep 1000
+  sleep 1000
 done
 
-# log level
-#LOG_LEVEL=${LOG_LEVEL:-"error"}
-
-# run salt as a deamon
-#exec /usr/bin/salt-master --log-level=$LOG_LEVEL
+/bin/cp -fr /usr/share/syslinux/* /var/lib/tftpboot
+systemctl start dnsmasq
+systemctl start vsftpd
