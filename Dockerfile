@@ -12,11 +12,13 @@ RUN set -ex                           \
     && yum install -y syslinux \
     && yum install -y tftp-server \
     && yum install -y vsftpd \
+    && yum install -y httpd \
     && yum clean -y expire-cache
 
 # volumes
 VOLUME /etc/dnsmasq.d         \
        /var/ftp/pub	      \
+       /var/www/html	      \
        /var/lib/tftpboot      \      
 
 # ports #tcp for all except 69 and 4011 are UDP
