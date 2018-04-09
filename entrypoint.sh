@@ -9,3 +9,6 @@ done
 
 systemctl start dnsmasq
 systemctl start vsftpd
+systemctl start httpd
+systemctl start xinetd
+systemctl start cobblerd
