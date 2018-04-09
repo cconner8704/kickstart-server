@@ -3,6 +3,7 @@ MAINTAINER Chris Conner <chrism.conner@gmail.com>
 
 #https://www.tecmint.com/install-pxe-network-boot-server-in-centos-7/
 #https://www.linuxtechi.com/configure-pxe-installation-server-centos-7/
+#https://hostpresto.com/community/tutorials/how-to-install-and-configure-cobbler-on-centos-7/
 RUN set -ex                           \
     && yum install -y epel-release \
     && yum update -y \
@@ -22,10 +23,14 @@ RUN set -ex                           \
     && yum clean -y expire-cache
 
 # volumes
-VOLUME /etc/dnsmasq.d         \
-       /var/ftp/pub	      \
-       /var/www/html	      \
-       /var/lib/tftpboot      \      
+#VOLUME /etc/dnsmasq.d         \
+#       /var/ftp/pub	      \
+#       /var/www/html	      \
+VOLUME /var/lib/tftpboot      \      
+       /etc/cobbler           \
+       /var/lib/cobbler       \
+       /var/www/cobbler       \
+       /var/named             \
 
 # ports #tcp for all except 69 and 4011 are UDP
 EXPOSE 21 53 67 69 80 4011

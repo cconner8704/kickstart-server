@@ -12,3 +12,6 @@ systemctl start vsftpd
 systemctl start httpd
 systemctl start xinetd
 systemctl start cobblerd
+
+/usr/bin/cobbler check
+/usr/bin/cobbler sync
