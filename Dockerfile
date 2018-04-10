@@ -32,6 +32,7 @@ VOLUME /var/lib/tftpboot      \
        /var/lib/cobbler       \
        /var/www/cobbler       \
        /var/named             \
+       /sys/fs/cgroup         
 
 # ports #tcp for all except 69 and 4011 are UDP
 EXPOSE 21 53 67 69 80 4011

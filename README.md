@@ -2,16 +2,22 @@
 
 A Docker image which allows you to run kickstart service using cobbler.
 
-This image uses systemd, so you must include cgroup.
+This image uses systemd, so you must include cgroup and elevated privs.
+
+#Only if /sys/fw/cgroup/systemd exists, not the case on Unraid
+-v /sys/fs/cgroup:/sys/fs/cgroup:ro      \
 
 On ubuntu you need to add:
 
 -v /tmp/$(mktemp -d):/run
 
-    docker run -d                                \
-#        -v /tmp/dnsmasq.d:/etc/dnsmasq.d         \
-#        -v /tmp/html:/var/ftp/pub                \
-#        -v /tmp/html:/var/www/html/              \
+Always need:
+
+--cap-add SYS_ADMIN --security-opt seccomp:unconfined
+
+Example Start
+
+    docker run -d --cap-add SYS_ADMIN --security-opt seccomp:unconfined \
         -v /tmp/tftpboot:/var/lib/tftpboot       \
         -v /tmp/named:/var/named                 \
         -v /tmp/cobbler/etc:/etc/cobbler         \
