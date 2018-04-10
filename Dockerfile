@@ -1,6 +1,7 @@
-FROM centos:centos7
+FROM cmconner156/docker-centos7-systemd
 MAINTAINER Chris Conner <chrism.conner@gmail.com>
 
+#https://hub.docker.com/_/centos/
 #https://www.tecmint.com/install-pxe-network-boot-server-in-centos-7/
 #https://www.linuxtechi.com/configure-pxe-installation-server-centos-7/
 #https://hostpresto.com/community/tutorials/how-to-install-and-configure-cobbler-on-centos-7/
@@ -39,9 +40,10 @@ EXPOSE 21 53 67 69 80 4011
 #RUN /bin/cp -fr /usr/share/syslinux/* /var/lib/tftpboot
 RUN sed -i "s/disable.*=.*yes/disable                 = no/g" /etc/xinetd.d/tftp
 
+
 # add run file
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # entrypoint
-CMD /entrypoint.sh
+CMD ["/entrypoint.sh"]
