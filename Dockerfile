@@ -32,11 +32,13 @@ RUN set -ex                           \
 #VOLUME /etc/dnsmasq.d         \
 #       /var/ftp/pub	      \
 #       /var/www/html	      \
+#       /var/named             \ 
 VOLUME /var/lib/tftpboot      \      
        /etc/cobbler           \
        /var/lib/cobbler       \
        /var/www/cobbler       \
-       /var/named             \ 
+       /run                   \
+       /mnt                   \
        /sys/fs/cgroup
 
 # ports #tcp for all except 69 and 547 are UDP
