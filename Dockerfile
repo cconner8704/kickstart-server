@@ -11,11 +11,13 @@ RUN set -ex                           \
     && yum install -y python-pip \
     && yum install -y net-tools \
     && yum install -y iproute \
+    && yum install -y vim \
     && yum install -y dnsmasq \
     && yum install -y syslinux \
     && yum install -y tftp-server \
     && yum install -y tftp \
     && yum install -y xinetd \
+    && yum install -y dhcpd \
     && yum install -y vsftpd \
     && yum install -y httpd \
     && yum install -y cobbler \
@@ -34,12 +36,14 @@ VOLUME /var/lib/tftpboot      \
        /var/named             \
        /sys/fs/cgroup         
 
-# ports #tcp for all except 69 and 4011 are UDP
-EXPOSE 21 53 67 69 80 4011
+# ports #tcp for all except 69 and 547 are UDP
+EXPOSE 69/udp 69/tcp 80/tcp 443/tcp 547/udp 547/tcp 25150/tcp 25151/tcp
 
 #Extra Config
-#RUN /bin/cp -fr /usr/share/syslinux/* /var/lib/tftpboot
+#Enable tftp
 RUN sed -i "s/disable.*=.*yes/disable                 = no/g" /etc/xinetd.d/tftp
+
+#Add cobbler check systemd
 RUN echo -e '[Unit]\n               \
 Description=Run cobbler check\n     \
 After=cobbler.service\n             \
@@ -57,6 +61,7 @@ WantedBy=multi-user.target\n        \
 '                                   \
 >> /etc/systemd/system/cobblercheck.service
 
+#Add cobbler sync systemd
 RUN echo -e '[Unit]\n               \
 Description=Run cobbler sync\n      \
 After=cobblercheck.service\n        \
@@ -75,10 +80,11 @@ WantedBy=multi-user.target\n        \
 >> /etc/systemd/system/cobblersync.service
 
 #RUN systemctl enable dnsmasq.service
-RUN systemctl enable vsftpd.service
-RUN systemctl enable httpd.service
-RUN systemctl enable xinetd.service
+#RUN systemctl enable vsftpd.service
+#RUN systemctl enable xinetd.service
 RUN systemctl enable cobblerd.service
+RUN systemctl enable httpd.service
+RUN systemctl enable dhcpd.service
 RUN systemctl enable cobblercheck.service
 RUN systemctl enable cobblersync.service
 

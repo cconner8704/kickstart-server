@@ -25,17 +25,22 @@ Example Start
         -v /tmp/cobbler/www:/var/www/cobbler     \
         -v /sys/fs/cgroup:/sys/fs/cgroup:ro      \
         -v /tmp/$(mktemp -d):/run                \
+        -p 69:69                                 \
+        -p 80:80                                 \
+        -p 443:443                               \
+        -p 547:547                               \
+        -p 25150:25150                           \ 
+        -p 25151:25151                           \ 
         --name kickstart-server                  \
         cmconner156/kickstart-server
 
 ## Ports
 
 The following ports are exposed:
- * `21`
- * `53`
- * `67`
  * `69`
  * `80`
  * `443`
- * `4011`
+ * `547`
+ * `25150`
+ * `25151`
 
