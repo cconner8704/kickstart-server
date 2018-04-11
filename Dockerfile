@@ -33,8 +33,8 @@ VOLUME /var/lib/tftpboot      \
        /etc/cobbler           \
        /var/lib/cobbler       \
        /var/www/cobbler       \
-       /var/named             \
-       /sys/fs/cgroup         
+       /var/named             
+#       /sys/fs/cgroup        #Removed since unraid fails with this 
 
 # ports #tcp for all except 69 and 547 are UDP
 EXPOSE 69/udp 69/tcp 80/tcp 443/tcp 547/udp 547/tcp 25150/tcp 25151/tcp
