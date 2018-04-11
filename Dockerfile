@@ -17,12 +17,15 @@ RUN set -ex                           \
     && yum install -y tftp-server \
     && yum install -y tftp \
     && yum install -y xinetd \
-    && yum install -y dhcp dhcp-common \
+    && yum install -y dhcp \
+    && yum install -y dhcp-common \
+    && yum install -y bind \
     && yum install -y vsftpd \
     && yum install -y httpd \
     && yum install -y cobbler \
     && yum install -y cobbler-web \
     && yum install -y pykickstart \
+    && yum install -y debmirror \
     && yum clean -y expire-cache
 
 # volumes
@@ -43,11 +46,29 @@ EXPOSE 69/udp 69/tcp 80/tcp 443/tcp 547/udp 547/tcp 25150/tcp 25151/tcp
 #Enable tftp
 RUN sed -i "s/disable.*=.*yes/disable                 = no/g" /etc/xinetd.d/tftp
 
+#Add cobbler sync systemd
+RUN echo -e '[Unit]\n               \
+Description=Run cobbler get-loaders\n      \
+After=cobbler.service\n        \
+Requires=cobbler.service\n          \
+\n                                  \
+[Service]\n                         \
+WorkingDirectory=/etc/cobbler\n     \
+Type=oneshot\n                      \
+RemainAfterExit=no\n                \
+ExecStart=/usr/bin/cobbler get-loaders\n \
+ExecReload=/usr/bin/cobbler get-loaders\n \
+\n                                  \
+[Install]\n                         \
+WantedBy=multi-user.target\n        \
+'                                   \
+>> /etc/systemd/system/cobblergetloaders.service
+
 #Add cobbler check systemd
 RUN echo -e '[Unit]\n               \
 Description=Run cobbler check\n     \
-After=cobbler.service\n             \
-Requires=cobbler.service\n          \
+After=cobblergetloaders.service\n   \
+Requires=cobbler.service\n \
 \n                                  \
 [Service]\n                         \
 WorkingDirectory=/etc/cobbler\n     \
@@ -82,9 +103,11 @@ WantedBy=multi-user.target\n        \
 #RUN systemctl enable dnsmasq.service
 #RUN systemctl enable vsftpd.service
 #RUN systemctl enable xinetd.service
-RUN systemctl enable cobblerd.service
+RUN systemctl enable rsyncd.service
 RUN systemctl enable httpd.service
 RUN systemctl enable dhcpd.service
+RUN systemctl enable cobblerd.service
+RUN systemctl enable cobblergetloaders.service
 RUN systemctl enable cobblercheck.service
 RUN systemctl enable cobblersync.service
 
