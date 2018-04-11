@@ -17,7 +17,7 @@ RUN set -ex                           \
     && yum install -y tftp-server \
     && yum install -y tftp \
     && yum install -y xinetd \
-    && yum install -y dhcpd \
+    && yum install -y dhcp dhcp-common \
     && yum install -y vsftpd \
     && yum install -y httpd \
     && yum install -y cobbler \
