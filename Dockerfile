@@ -112,6 +112,7 @@ RUN systemctl enable cobblerd.service
 RUN systemctl enable cobblergetloaders.service
 RUN systemctl enable cobblercheck.service
 RUN systemctl enable cobblersync.service
+RUN touch /etc/xinetd.d/rsync
 
 #systemctl start dnsmasq
 #systemctl start vsftpd
