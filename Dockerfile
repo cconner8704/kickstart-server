@@ -8,7 +8,12 @@ MAINTAINER Chris Conner <chrism.conner@gmail.com>
 RUN set -ex                           \
     && yum install -y epel-release \
     && yum update -y \
+    && yum install epel-release -y \
+    && yum update -y \
+    && yum install -y https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm \
+    && yum install -y salt-cloud \
     && yum install -y python-pip \
+    && /usr/bin/pip install pyvmomi \
     && yum install -y net-tools \
     && yum install -y iproute \
     && yum install -y vim \
@@ -39,6 +44,7 @@ VOLUME /var/lib/tftpboot      \
        /etc/cobbler           \
        /var/lib/cobbler       \
        /var/www/cobbler       \
+       /etc/salt	      \
        /run                   \
        /mnt                   \
        /sys/fs/cgroup
