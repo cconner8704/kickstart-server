@@ -41,6 +41,7 @@ RUN set -ex                           \
 #       /var/ftp/pub	      \
 #       /var/www/html	      \
 #       /var/named             \ 
+#       /run                   \
 VOLUME /var/lib/tftpboot      \      
        /etc/cobbler           \
        /var/lib/cobbler       \
@@ -49,8 +50,8 @@ VOLUME /var/lib/tftpboot      \
        /etc/salt/cloud.profiles.d \
        /etc/salt/cloud.providers.d \
        /etc/debmirror.conf    \
+       /etc/httpd             \
        /systems               \
-       /run                   \
        /mnt                   \
        /sys/fs/cgroup
 
