@@ -44,13 +44,16 @@ VOLUME /var/lib/tftpboot      \
        /etc/cobbler           \
        /var/lib/cobbler       \
        /var/www/cobbler       \
-       /etc/salt	      \
+       /etc/salt/cloud.maps.d \
+       /etc/salt/cloud.profiles.d \
+       /etc/salt/cloud.providers.d \
        /run                   \
        /mnt                   \
        /sys/fs/cgroup
 
 # ports #tcp for all except 69 and 547 are UDP
-EXPOSE 69/udp 69/tcp 80/tcp 443/tcp 547/udp 547/tcp 25150/tcp 25151/tcp
+#EXPOSE 69/udp 69/tcp 80/tcp 443/tcp 547/udp 547/tcp 25150/tcp 25151/tcp
+EXPOSE 67/udp 67/tcp 69/udp 69/tcp 80/tcp 443/tcp 25150/tcp 25151/tcp
 
 #Extra Config
 #Enable tftp
