@@ -15,6 +15,7 @@ RUN set -ex                           \
     && yum install -y python-pip \
     && /usr/bin/pip install pyvmomi \
     && yum install -y net-tools \
+    && yum install -y bind-utils \
     && yum install -y iproute \
     && yum install -y vim \
     && yum install -y dnsmasq \
