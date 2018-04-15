@@ -31,7 +31,7 @@ RUN set -ex                           \
     && yum install -y cobbler-web \
     && yum install -y pykickstart \
     && yum install -y debmirror \
-    && yum install -y fence-agents
+    && yum install -y fence-agents \
     && yum install -y vim \
     && yum install -y less \
     && yum clean -y expire-cache
