@@ -31,6 +31,7 @@ RUN set -ex                           \
     && yum install -y cobbler-web \
     && yum install -y pykickstart \
     && yum install -y debmirror \
+    && yum install -y fence-agents
     && yum install -y vim \
     && yum install -y less \
     && yum clean -y expire-cache
@@ -47,6 +48,7 @@ VOLUME /var/lib/tftpboot      \
        /etc/salt/cloud.maps.d \
        /etc/salt/cloud.profiles.d \
        /etc/salt/cloud.providers.d \
+       /etc/debmirror.conf    \
        /systems               \
        /run                   \
        /mnt                   \
@@ -61,62 +63,63 @@ EXPOSE 67/udp 67/tcp 69/udp 69/tcp 80/tcp 443/tcp 25150/tcp 25151/tcp
 RUN sed -i "s/disable.*=.*yes/disable                 = no/g" /etc/xinetd.d/tftp
 
 #Add cobbler sync systemd
-RUN echo -e '[Unit]\n               \
-Description=Run cobbler get-loaders\n      \
-After=cobbler.service\n        \
-Requires=cobbler.service\n          \
-\n                                  \
-[Service]\n                         \
-WorkingDirectory=/etc/cobbler\n     \
-Type=oneshot\n                      \
-RemainAfterExit=no\n                \
-ExecStart=/usr/bin/cobbler get-loaders\n \
-ExecReload=/usr/bin/cobbler get-loaders\n \
-\n                                  \
-[Install]\n                         \
-WantedBy=multi-user.target\n        \
-'                                   \
+RUN echo -e '[Unit]\n\
+Description=Run cobbler get-loaders\n\
+After=cobbler.service\n\
+Requires=cobbler.service\n\
+\n\
+[Service]\n\
+WorkingDirectory=/etc/cobbler\n\
+Type=oneshot\n\
+RemainAfterExit=no\n\
+ExecStart=/usr/bin/cobbler get-loaders\n\
+ExecReload=/usr/bin/cobbler get-loaders\n\
+\n\
+[Install]\n\
+WantedBy=multi-user.target\n\
+'\
 >> /etc/systemd/system/cobblergetloaders.service
 
 #Add cobbler check systemd
-RUN echo -e '[Unit]\n               \
-Description=Run cobbler check\n     \
-After=cobblergetloaders.service\n   \
-Requires=cobbler.service\n \
-\n                                  \
-[Service]\n                         \
-WorkingDirectory=/etc/cobbler\n     \
-Type=oneshot\n                      \
-RemainAfterExit=no\n                \
-ExecStart=/usr/bin/cobbler check\n  \
-ExecReload=/usr/bin/cobbler check\n \
-\n                                  \
-[Install]\n                         \
-WantedBy=multi-user.target\n        \
-'                                   \
+RUN echo -e '[Unit]\n\
+Description=Run cobbler check\n\
+After=cobblergetloaders.service\n\
+Requires=cobbler.service\n\
+\n\
+[Service]\n\
+#WorkingDirectory=/etc/cobbler\n\
+#Type=oneshot\n\
+#RemainAfterExit=no\n\
+ExecStart=/usr/bin/cobbler check\n\
+#ExecReload=/usr/bin/cobbler check\n\
+\n\
+[Install]\n\
+WantedBy=multi-user.target\n\
+'\
 >> /etc/systemd/system/cobblercheck.service
 
 #Add cobbler sync systemd
-RUN echo -e '[Unit]\n               \
-Description=Run cobbler sync\n      \
-After=cobblercheck.service\n        \
-Requires=cobbler.service\n          \
-\n                                  \
-[Service]\n                         \
-WorkingDirectory=/etc/cobbler\n     \
-Type=oneshot\n                      \
-RemainAfterExit=no\n                \
-ExecStart=/usr/bin/cobbler sync\n   \
-ExecReload=/usr/bin/cobbler sync\n  \
-\n                                  \
-[Install]\n                         \
-WantedBy=multi-user.target\n        \
-'                                   \
+RUN echo -e '[Unit]\n\
+Description=Run cobbler sync\n\
+After=cobblercheck.service\n\
+Requires=cobbler.service\n\
+\n\
+[Service]\n\
+#WorkingDirectory=/etc/cobbler\n\
+#Type=oneshot\n\
+#RemainAfterExit=no\n\
+ExecStart=/usr/bin/cobbler sync\n\
+#ExecReload=/usr/bin/cobbler sync\n\
+\n\
+[Install]\n\
+WantedBy=multi-user.target\n\
+'\
 >> /etc/systemd/system/cobblersync.service
 
 #RUN systemctl enable dnsmasq.service
 #RUN systemctl enable vsftpd.service
 #RUN systemctl enable xinetd.service
+RUN systemctl daemon-reload
 RUN systemctl enable rsyncd.service
 RUN systemctl enable httpd.service
 RUN systemctl enable dhcpd.service
