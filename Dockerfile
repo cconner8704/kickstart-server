@@ -47,6 +47,7 @@ VOLUME /var/lib/tftpboot      \
        /etc/salt/cloud.maps.d \
        /etc/salt/cloud.profiles.d \
        /etc/salt/cloud.providers.d \
+       /systems               \
        /run                   \
        /mnt                   \
        /sys/fs/cgroup
