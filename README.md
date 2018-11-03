@@ -4,6 +4,16 @@ A Docker image which allows you to run kickstart service using cobbler.
 
 This image uses systemd, so you must include cgroup and elevated privs.
 
+Building:
+
+#Build docker image
+export REPONAME=-kickstart-server
+echo "Building: ${REPONAME}"; docker build -t cmconner156/${REPONAME}:latest https://github.com/cmconner156/${REPONAME}.git
+
+#Push docker image
+echo "Building: ${REPONAME}"; docker push cmconner156/${REPONAME}
+
+
 #Only if /sys/fw/cgroup/systemd exists, not the case on Unraid
 -v /sys/fs/cgroup:/sys/fs/cgroup:ro      \
 
